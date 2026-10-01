@@ -418,6 +418,10 @@ export default function DriverPage() {
   const [locating,  setLocating]  = useState(false);
 
   const handleLocate = useCallback(() => {
+    if (!navigator.geolocation) {
+      toast.error('Auto-location requires HTTPS. Please select a city manually below.');
+      return;
+    }
     setLocating(true);
     navigator.geolocation.getCurrentPosition(
       (pos) => {
@@ -425,9 +429,12 @@ export default function DriverPage() {
         setLocating(false);
         toast.success('Location acquired');
       },
-      () => {
+      (err) => {
         setLocating(false);
-        toast.error('Unable to get location. Please allow GPS access.');
+        if (err.code === 1) toast.error('Permission denied. Please allow location access in browser settings.');
+        else if (err.code === 2) toast.error('Location unavailable. Please turn on your device GPS/Location.');
+        else if (err.code === 3) toast.error('Location request timed out. Try again.');
+        else toast.error('Unable to get location. Please turn on your GPS.');
       },
       { timeout: 10000, enableHighAccuracy: true }
     );
