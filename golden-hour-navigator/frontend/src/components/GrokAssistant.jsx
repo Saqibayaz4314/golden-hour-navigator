@@ -5,7 +5,7 @@ import { callAITriage } from '../services/api';
 export default function GrokAssistant() {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
-    { role: 'ai', text: 'Grok AI active. What is the patient\'s condition? I can provide immediate first aid steps while you route.' }
+    { role: 'ai', text: 'AI Triage (Powered by Llama-3 / Groq) is active. What is the patient\'s condition? I can provide immediate first aid steps while you route.' }
   ]);
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
@@ -97,7 +97,7 @@ export default function GrokAssistant() {
           }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               <div style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--green)', boxShadow: '0 0 8px var(--green)' }} />
-              <span style={{ fontWeight: 600, fontSize: '0.95rem' }}>Grok Triage AI</span>
+              <span style={{ fontWeight: 600, fontSize: '0.95rem' }}>AI Triage (Groq)</span>
             </div>
             <button
               onClick={() => setIsOpen(false)}
@@ -131,7 +131,7 @@ export default function GrokAssistant() {
             ))}
             {isTyping && (
               <div style={{ alignSelf: 'flex-start', color: 'var(--text-muted)', fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                <Activity size={12} className="spinner" /> Grok is analyzing...
+                <Activity size={12} className="spinner" /> AI is analyzing...
               </div>
             )}
             <div ref={messagesEndRef} />

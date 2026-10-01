@@ -14,7 +14,7 @@ router.post('/triage', async (req, res) => {
 
   try {
     const response = await axios.post(
-      'https://api.x.ai/v1/chat/completions',
+      'https://api.groq.com/openai/v1/chat/completions',
       {
         messages: [
           {
@@ -26,7 +26,7 @@ router.post('/triage', async (req, res) => {
             content: message
           }
         ],
-        model: "grok-beta",
+        model: "llama3-8b-8192",
         stream: false,
         temperature: 0.2
       },
