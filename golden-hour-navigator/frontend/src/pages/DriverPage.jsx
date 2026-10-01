@@ -139,8 +139,9 @@ function HospitalSearch({ location, locating, onLocate, onManualSet }) {
 
   const handleNavigate = (h) => {
     const c = h.location?.coordinates;
+    const originParam = location && location.lat ? `&origin=${location.lat},${location.lng}` : '';
     const url = c
-      ? `https://www.google.com/maps/dir/?api=1&destination=${c[1]},${c[0]}`
+      ? `https://www.google.com/maps/dir/?api=1&destination=${c[1]},${c[0]}${originParam}`
       : `https://www.google.com/maps/search/${encodeURIComponent(h.name)}`;
     window.open(url, '_blank');
     setTimeout(() => setOutcomeTarget(h), 8000);
