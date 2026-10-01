@@ -98,7 +98,7 @@ function LocationBtn({ location, locating, onLocate, onManualSet }) {
 }
 
 /* ── Hospital search tab ────────────────────── */
-function HospitalSearch({ location, locating, onLocate }) {
+function HospitalSearch({ location, locating, onLocate, onManualSet }) {
   const [selected,     setSelected]     = useState(null);
   const [useRecommend, setUseRecommend] = useState(false);
   const [hospitals,    setHospitals]    = useState([]);

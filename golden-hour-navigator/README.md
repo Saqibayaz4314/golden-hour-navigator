@@ -49,6 +49,8 @@ Every minute of delay in emergency care costs lives. Yet today:
 - **Floating AI Chatbot** available to drivers en route to the hospital.
 - Drivers can type symptoms (e.g., "Patient has severe chest pain").
 - Grok AI instantly returns **actionable first-aid protocols** (e.g., CPR instructions, burn care) to stabilize the patient during the "Golden Hour".
+- **Backend API Proxy:** Calls to `api.x.ai/v1/chat/completions` are securely routed through our Express backend.
+- **Fail-Safe Simulation:** If the API key is missing or rate-limited, the system gracefully falls back to a locally simulated triage engine with 100% realistic UI.
 
 ### Hospital Search (2 modes)
 | Mode | How It Works |
@@ -72,10 +74,10 @@ Every minute of delay in emergency care costs lives. Yet today:
 - Hospitals with high reliability are ranked higher in recommendations — giving them an incentive to report accurately
 - **Anonymous Whistleblower** — staff can report discrepancies without exposing their identity
 
-### Offline / Rural Mode
-- Last search results are **cached in browser localStorage**
-- PWA-ready with `manifest.json` for home-screen installation
-- Shows a persistent offline banner when network is lost
+### Offline Mode & Remote Operations
+- **Browser Caching:** Last search results are cached in `localStorage`.
+- **Manual City Override:** If GPS is unavailable, drivers can manually select their city (e.g., Sukkur, Khairpur, Gambat) to instantly mock coordinates and find local facilities.
+- **PWA-Ready:** Prepared with `manifest.json` for home-screen installation.
 
 ---
 
