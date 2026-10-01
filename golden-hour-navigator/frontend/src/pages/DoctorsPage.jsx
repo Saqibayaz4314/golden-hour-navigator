@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { getDoctors } from '../services/api';
-import { Users, Stethoscope, Building2 } from 'lucide-react';
+import { Users, Stethoscope, Building2, Search } from 'lucide-react';
 
 const SPECIALTIES = ['All', 'Cardiac', 'Trauma', 'Burns', 'Maternity', 'Neurology', 'General'];
 
@@ -9,6 +9,7 @@ export default function DoctorsPage() {
   const [filtered, setFiltered] = useState([]);
   const [loading, setLoading] = useState(true);
   const [spec, setSpec]       = useState('All');
+  const [query, setQuery]     = useState('');
 
   useEffect(() => {
     getDoctors()
@@ -18,8 +19,11 @@ export default function DoctorsPage() {
   }, []);
 
   useEffect(() => {
-    setFiltered(spec === 'All' ? all : all.filter(d => d.specialty === spec));
-  }, [spec, all]);
+    let res = all;
+    if (spec !== 'All') res = res.filter(d => d.specialty === spec);
+    if (query) res = res.filter(d => d.name.toLowerCase().includes(query.toLowerCase()));
+    setFiltered(res);
+  }, [spec, query, all]);
 
   const onDuty  = all.filter(d => d.is_available).length;
   const offDuty = all.length - onDuty;
@@ -52,17 +56,30 @@ export default function DoctorsPage() {
           ))}
         </div>
 
-        {/* Specialty filter */}
-        <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap', marginBottom: '1.5rem' }}>
-          {SPECIALTIES.map(s => (
-            <button
-              key={s}
-              className={`btn btn-sm ${spec === s ? 'btn-primary' : 'btn-outline'}`}
-              onClick={() => setSpec(s)}
-            >
-              {s}
-            </button>
-          ))}
+        {/* Filters */}
+        <div style={{ display: 'flex', gap: '0.75rem', marginBottom: '1.5rem', flexWrap: 'wrap' }}>
+          <div className="input-icon-wrap" style={{ flex: 1, minWidth: 220 }}>
+            <Search size={15} className="icon-left" />
+            <input
+              id="doctors-search"
+              className="input"
+              placeholder="Search by doctor name..."
+              value={query}
+              onChange={e => setQuery(e.target.value)}
+            />
+          </div>
+
+          <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
+            {SPECIALTIES.map(s => (
+              <button
+                key={s}
+                className={`btn btn-sm ${spec === s ? 'btn-primary' : 'btn-outline'}`}
+                onClick={() => setSpec(s)}
+              >
+                {s}
+              </button>
+            ))}
+          </div>
         </div>
 
         {loading ? (
