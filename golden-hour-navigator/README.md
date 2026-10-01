@@ -12,6 +12,8 @@
 
 **Team CodeCrafters** · Lead: Saqib Ayaz · Members: Toheed Ahmed, Sameer Ahmed
 
+### 🚀 **Live Demo:** [http://golden-hour-nav.duckdns.org](http://golden-hour-nav.duckdns.org)
+
 </div>
 
 ---
@@ -319,13 +321,13 @@ npm run dev
 | Frontend | http://localhost:3000 |
 | Backend API | http://localhost:5000 |
 
-### Demo Accounts
+### Demo Accounts (For Judges)
 
-| Email | Password | Role |
-|-------|----------|------|
-| `admin@ghn.com` | `admin123` | Admin |
-| `staff@jinnah.com` | `staff123` | Hospital Staff |
-| `staff@mayo.com` | `staff123` | Hospital Staff |
+| Facility | Email | Password | Role |
+|----------|-------|----------|------|
+| Civil Hospital Sukkur | `staff@civil.com` | `password123` | Hospital Staff |
+| Hira Medical Center | `staff@hira.com` | `password123` | Hospital Staff |
+| Red Crescent Hospital | `staff@redcrescent.com` | `password123` | Hospital Staff |
 
 ---
 
