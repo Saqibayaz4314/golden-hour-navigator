@@ -89,6 +89,7 @@ graph TD
     C["Hospital Staff\n(Tablet/Desktop)"] -->|HTTPS| B
     B -->|REST API| D[Node.js + Express\nAPI Server]
     D -->|Mongoose ODM| E[(MongoDB Atlas\nCloud Database)]
+    D -->|HTTPS| L["Groq / Llama-3 API\n(AI Triage)"]
     E -->|2dsphere GeoIndex| F[GeoNear Queries]
     D --> G[JWT Auth Middleware]
     D --> H[Composite Scoring Engine]
