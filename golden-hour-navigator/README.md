@@ -56,6 +56,10 @@ Every minute of delay in emergency care costs lives. Yet today:
 | **Nearest** | `$geoNear` MongoDB query finds the closest hospital with available beds + required speciality |
 | **Best Match** | Composite scoring algorithm ranks hospitals by Reliability (35%) + Beds (30%) + Distance (25%) + Live Doctors (10%) |
 
+### ⏳ The "Golden Hour" Countdown Timer
+- When a driver begins a hospital route, a **live 60-minute countdown** begins on screen.
+- Visually pulses red when critical time (under 15 mins) is remaining, reinforcing the core "Golden Hour" theme of the hackathon.
+
 ### Doctor Search
 - Filter by **specialization** (Cardiac, Trauma, Burns, Maternity, Neurology, General)
 - Each doctor shows a **per-hospital schedule** (day + time slots, e.g. Mon–Thu 9am–2pm at Jinnah, Tue–Thu 4pm–8pm at Private Clinic)

@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { Bot, X, Send, Activity, Sparkles } from 'lucide-react';
+import { callAITriage } from '../services/api';
 
 export default function GrokAssistant() {
   const [isOpen, setIsOpen] = useState(false);
@@ -18,7 +19,7 @@ export default function GrokAssistant() {
     scrollToBottom();
   }, [messages, isTyping]);
 
-  const handleSend = (e) => {
+  const handleSend = async (e) => {
     e.preventDefault();
     if (!input.trim()) return;
 
@@ -27,22 +28,30 @@ export default function GrokAssistant() {
     setMessages(prev => [...prev, { role: 'user', text: userMsg }]);
     setIsTyping(true);
 
-    // Simulate Grok API call delay
-    setTimeout(() => {
-      let aiResponse = "Keep the patient calm and monitor their breathing. Ensure their airway is clear. Proceed to the nearest hospital immediately.";
-      
-      const lower = userMsg.toLowerCase();
-      if (lower.includes('chest') || lower.includes('heart')) {
-        aiResponse = "Suspected Cardiac Event. 1. Keep patient seated and calm. 2. Loosen tight clothing. 3. If they are prescribed nitroglycerin, assist them in taking it. 4. If unconscious, begin CPR immediately. Route to the nearest Cardiac facility.";
-      } else if (lower.includes('burn') || lower.includes('fire')) {
-        aiResponse = "Burn Protocol: 1. Stop the burning process. 2. Cool the burn with cool (not cold) running water for 10-20 mins. 3. Do not apply ice or ointments. 4. Cover with a sterile, non-fluffy dressing. Route to nearest Burns center.";
-      } else if (lower.includes('bleed') || lower.includes('cut')) {
-        aiResponse = "Severe Bleeding: 1. Apply direct, firm pressure to the wound with a clean cloth. 2. Elevate the injured area if possible. 3. If bleeding soaks through, add more cloths on top—do not remove the first one. Route to Trauma center.";
+    try {
+      const { data } = await callAITriage(userMsg);
+      setMessages(prev => [...prev, { role: 'ai', text: data.message }]);
+    } catch (err) {
+      if (err.response?.status === 503) {
+        // Fallback to simulation if key is not configured
+        setTimeout(() => {
+          let aiResponse = "Keep the patient calm and monitor their breathing. Ensure their airway is clear. Proceed to the nearest hospital immediately.";
+          const lower = userMsg.toLowerCase();
+          if (lower.includes('chest') || lower.includes('heart')) {
+            aiResponse = "Suspected Cardiac Event. 1. Keep patient seated and calm. 2. Loosen tight clothing. 3. If they are prescribed nitroglycerin, assist them in taking it. 4. Route to nearest Cardiac facility.";
+          } else if (lower.includes('burn') || lower.includes('fire')) {
+            aiResponse = "Burn Protocol: 1. Stop the burning process. 2. Cool the burn with cool (not cold) running water for 10-20 mins. Route to nearest Burns center.";
+          } else if (lower.includes('bleed') || lower.includes('cut')) {
+            aiResponse = "Severe Bleeding: 1. Apply direct, firm pressure to the wound with a clean cloth. 2. Elevate the injured area if possible. Route to Trauma center.";
+          }
+          setMessages(prev => [...prev, { role: 'ai', text: `[SIMULATION MODE] ${aiResponse}` }]);
+        }, 1000);
+      } else {
+        setMessages(prev => [...prev, { role: 'ai', text: 'Sorry, I am having trouble connecting to Grok right now.' }]);
       }
-
-      setMessages(prev => [...prev, { role: 'ai', text: aiResponse }]);
+    } finally {
       setIsTyping(false);
-    }, 1500);
+    }
   };
 
   return (

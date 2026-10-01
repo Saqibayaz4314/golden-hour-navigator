@@ -12,6 +12,7 @@ import {
 } from '../services/api';
 import HospitalCard from '../components/HospitalCard';
 import DoctorCard   from '../components/DoctorCard';
+import GoldenHourTimer from '../components/GoldenHourTimer';
 import MapView      from '../components/MapView';
 import toast        from 'react-hot-toast';
 
@@ -104,6 +105,7 @@ function HospitalSearch({ location, locating, onLocate }) {
   const [loading,      setLoading]      = useState(false);
   const [step,         setStep]         = useState('select');
   const [incidentId,   setIncidentId]   = useState(null);
+  const [incidentStartTime, setIncidentStartTime] = useState(null);
   const [outcomeTarget, setOutcomeTarget] = useState(null);
 
   const handleSearch = async () => {
@@ -116,6 +118,7 @@ function HospitalSearch({ location, locating, onLocate }) {
       setHospitals(data);
       setStep('results');
       if (data.length > 0) {
+        setIncidentStartTime(Date.now());
         const res = await logIncident({
           patient_condition: selected,
           driver_location: location,
@@ -230,6 +233,8 @@ function HospitalSearch({ location, locating, onLocate }) {
               <ChevronLeft size={14} /> Back
             </button>
           </div>
+
+          {incidentStartTime && <GoldenHourTimer startTime={incidentStartTime} />}
 
           {hospitals.length > 0 && <MapView driverLocation={location} hospitals={hospitals} />}
 

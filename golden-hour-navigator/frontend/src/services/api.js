@@ -26,4 +26,7 @@ export const logIncident      = (data) => api.post('/incidents', data);
 export const reportOutcome    = (id, outcome) => api.put(`/incidents/${id}/outcome`, { outcome });
 export const whistleblow      = (id, note)    => api.post(`/incidents/${id}/whistleblow`, { discrepancy_note: note });
 
+// ── AI ──────────────────────────────────
+export const callAITriage     = (message) => api.post('/ai/triage', { message });
+
 export { api };

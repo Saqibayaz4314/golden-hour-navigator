@@ -20,6 +20,7 @@ app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/hospitals', require('./routes/hospitalRoutes'));
 app.use('/api/doctors', require('./routes/doctorRoutes'));
 app.use('/api/incidents', require('./routes/incidentRoutes'));
+app.use('/api/ai', require('./routes/aiRoutes'));
 
 // Global error handler
 app.use((err, req, res, next) => {
