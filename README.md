@@ -45,9 +45,9 @@ Every minute of delay in emergency care costs lives. Yet today:
 
 ## Key Features
 
-### AI Triage Assistant (Powered by Grok)
+### AI Triage Assistant (Powered by Groq / Llama-3)
 - **Floating AI Chatbot** available to drivers en route to the hospital.
-- Drivers can type symptoms (e.g., "Patient has severe chest pain").
+- **🎙️ Voice Commands:** Drivers can tap the microphone icon to speak their symptoms hands-free while driving.
 - Grok AI instantly returns **actionable first-aid protocols** (e.g., CPR instructions, burn care) to stabilize the patient during the "Golden Hour".
 - **Backend API Proxy:** Calls to `api.x.ai/v1/chat/completions` are securely routed through our Express backend.
 - **Fail-Safe Simulation:** If the API key is missing or rate-limited, the system gracefully falls back to a locally simulated triage engine with 100% realistic UI.
