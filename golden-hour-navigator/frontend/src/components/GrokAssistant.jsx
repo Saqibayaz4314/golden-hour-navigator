@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Bot, X, Send, Activity, Sparkles } from 'lucide-react';
+import { Bot, X, Send, Activity, Sparkles, Mic } from 'lucide-react';
 import { callAITriage } from '../services/api';
 
 export default function GrokAssistant() {
@@ -9,6 +9,7 @@ export default function GrokAssistant() {
   ]);
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
+  const [isListening, setIsListening] = useState(false);
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
@@ -18,6 +19,27 @@ export default function GrokAssistant() {
   useEffect(() => {
     scrollToBottom();
   }, [messages, isTyping]);
+
+  const toggleListen = () => {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) return toast.error('Voice not supported in this browser.');
+    
+    if (isListening) return; // Currently listening
+    
+    const recognition = new SpeechRecognition();
+    recognition.lang = 'en-US';
+    recognition.interimResults = false;
+    
+    recognition.onstart = () => setIsListening(true);
+    recognition.onresult = (event) => {
+      const transcript = event.results[0][0].transcript;
+      setInput(prev => prev + (prev ? ' ' : '') + transcript);
+    };
+    recognition.onerror = () => setIsListening(false);
+    recognition.onend = () => setIsListening(false);
+    
+    recognition.start();
+  };
 
   const handleSend = async (e) => {
     e.preventDefault();
@@ -140,13 +162,29 @@ export default function GrokAssistant() {
           {/* Input */}
           <form onSubmit={handleSend} style={{
             padding: '1rem', borderTop: '1px solid var(--border-subtle)',
-            background: 'var(--bg-raised)', display: 'flex', gap: '0.5rem'
+            background: 'var(--bg-raised)', display: 'flex', gap: '0.5rem', alignItems: 'center'
           }}>
+            <button
+              type="button"
+              onClick={toggleListen}
+              style={{
+                width: '36px', height: '36px', borderRadius: '50%', flexShrink: 0,
+                background: isListening ? 'rgba(239,68,68,0.2)' : 'var(--bg-base)', 
+                border: `1px solid ${isListening ? 'var(--red)' : 'var(--border-subtle)'}`, 
+                color: isListening ? 'var(--red)' : 'var(--text-muted)',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                cursor: 'pointer',
+                animation: isListening ? 'pulse 1.5s infinite' : 'none'
+              }}
+              title="Tap to speak"
+            >
+              <Mic size={16} />
+            </button>
             <input
               type="text"
               value={input}
               onChange={e => setInput(e.target.value)}
-              placeholder="Describe symptoms..."
+              placeholder={isListening ? "Listening..." : "Describe symptoms..."}
               style={{
                 flex: 1, background: 'var(--bg-base)', border: '1px solid var(--border-subtle)',
                 borderRadius: '999px', padding: '0.5rem 1rem', color: '#fff', outline: 'none'
@@ -156,7 +194,7 @@ export default function GrokAssistant() {
               type="submit"
               disabled={!input.trim() || isTyping}
               style={{
-                width: '36px', height: '36px', borderRadius: '50%',
+                width: '36px', height: '36px', borderRadius: '50%', flexShrink: 0,
                 background: 'var(--green)', border: 'none', color: '#000',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 cursor: input.trim() && !isTyping ? 'pointer' : 'not-allowed',
