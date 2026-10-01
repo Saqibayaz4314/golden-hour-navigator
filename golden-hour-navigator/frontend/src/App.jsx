@@ -10,6 +10,7 @@ import LoginPage from './pages/LoginPage';
 import HospitalDashboard from './pages/HospitalDashboard';
 import HospitalsPage from './pages/HospitalsPage';
 import DoctorsPage from './pages/DoctorsPage';
+import SystemAnalytics from './pages/SystemAnalytics';
 import './index.css';
 
 function ProtectedRoute({ children }) {
@@ -46,6 +47,7 @@ function AppRoutes() {
         <Route path="/login"             element={<LoginPage />} />
         <Route path="/hospitals"         element={<HospitalsPage />} />
         <Route path="/doctors"           element={<DoctorsPage />} />
+        <Route path="/analytics"         element={<SystemAnalytics />} />
         <Route path="/hospital/dashboard" element={
           <ProtectedRoute><HospitalDashboard /></ProtectedRoute>
         } />

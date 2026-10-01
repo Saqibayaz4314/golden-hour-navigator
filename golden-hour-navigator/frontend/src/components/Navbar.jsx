@@ -1,6 +1,6 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { Activity, LayoutDashboard, Building2, Stethoscope, LogOut, Cross } from 'lucide-react';
+import { Activity, LayoutDashboard, Building2, Stethoscope, LogOut, Cross, BarChart3 } from 'lucide-react';
 
 export default function Navbar() {
   const { user, logout } = useAuth();
@@ -48,6 +48,14 @@ export default function Navbar() {
         >
           <Stethoscope size={15} />
           <span>Doctors</span>
+        </Link>
+
+        <Link
+          to="/analytics"
+          className={`nav-link ${isActive('/analytics') ? 'active' : ''}`}
+        >
+          <BarChart3 size={15} />
+          <span>Network Stats</span>
         </Link>
 
         {user ? (
