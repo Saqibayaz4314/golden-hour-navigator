@@ -1,0 +1,14 @@
+{
+  "name": "golden-hour-navigator",
+  "version": "1.0.0",
+  "description": "Unified emergency hospital routing platform - IET TechFest Hackathon 2026",
+  "scripts": {
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "cd backend && npm run dev",
+    "client": "cd frontend && npm run dev",
+    "install-all": "npm install && cd backend && npm install && cd ../frontend && npm install"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

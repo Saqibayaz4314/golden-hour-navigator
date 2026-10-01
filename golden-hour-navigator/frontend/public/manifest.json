@@ -1,0 +1,12 @@
+{
+  "name": "Golden Hour Navigator",
+  "short_name": "GHN",
+  "description": "Real-time emergency hospital routing platform",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0a0f",
+  "theme_color": "#00e676",
+  "icons": [
+    { "src": "/ambulance.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}
