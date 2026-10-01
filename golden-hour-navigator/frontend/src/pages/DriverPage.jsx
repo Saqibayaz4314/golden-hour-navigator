@@ -418,27 +418,37 @@ export default function DriverPage() {
   const [location,  setLocation]  = useState(null);
   const [locating,  setLocating]  = useState(false);
 
-  const handleLocate = useCallback(() => {
+  const handleLocate = useCallback(async () => {
     if (!navigator.geolocation) {
       toast.error('Auto-location requires HTTPS. Please select a city manually below.');
       return;
     }
+    
     setLocating(true);
-    navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        setLocation({ lat: pos.coords.latitude, lng: pos.coords.longitude });
-        setLocating(false);
-        toast.success('Location acquired');
-      },
-      (err) => {
-        setLocating(false);
-        if (err.code === 1) toast.error('Permission denied. Please allow location access in browser settings.');
-        else if (err.code === 2) toast.error('Location unavailable. Please turn on your device GPS/Location.');
-        else if (err.code === 3) toast.error('Location request timed out. Try again.');
-        else toast.error('Unable to get location. Please turn on your GPS.');
-      },
-      { timeout: 10000, enableHighAccuracy: true }
-    );
+    
+    try {
+      const pos = await new Promise((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition(resolve, reject, { 
+          timeout: 10000, 
+          enableHighAccuracy: true 
+        });
+      });
+      
+      setLocation({ lat: pos.coords.latitude, lng: pos.coords.longitude });
+      toast.success('Location acquired');
+    } catch (err) {
+      if (err.code === 1) {
+        toast('Location access blocked. Using manual selection instead.', { icon: '🛑' });
+      } else if (err.code === 2) {
+        toast('GPS is turned off. Please enable it in your device settings.', { icon: '📡' });
+      } else if (err.code === 3) {
+        toast('Location request timed out. Please try again.', { icon: '⏱️' });
+      } else {
+        toast.error('Unable to fetch location.');
+      }
+    } finally {
+      setLocating(false);
+    }
   }, []);
 
   const handleManualSet = (city) => {
